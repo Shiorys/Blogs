@@ -1,4 +1,4 @@
-<center><h1>Git-分布式版本控制系统</h1></center>
+<center><h1>Git的下载、安装、配置(待整理完善)</h1></center>
 
 <center><h5>作者：汐小旅Shiory</h5></center>
 
