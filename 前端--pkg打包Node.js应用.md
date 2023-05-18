@@ -12,7 +12,7 @@
 
 
 
-## 1、安装pkg
+## 安装pkg
 
 > 全局安装pkg
 >
@@ -25,7 +25,7 @@
 
 
 
-## 2、用法
+## 用法
 
 > pkg安装完成后，通过`pkg -h`查看相关命令
 >
@@ -55,7 +55,7 @@
 
 
 
-## 3、使用举例
+## 使用举例
 
 > **1、全局安装pkg**
 >
@@ -63,15 +63,21 @@
 > npm install -g pkg
 > ```
 >
+> 
+>
 > **2、打包项目为 `dist`**
 >
 > ```sh
 > npm run build
 > ```
 >
+> 
+>
 > **3、新建一个文件夹，如deskapp，将打包好的dist文件夹放到该目录下**
 >
 > ![](img/微信截图_20230518154952.png)
+>
+> 
 >
 > **4、在deskapp目录下新建打包入口文件：server.js**
 >
@@ -88,13 +94,15 @@
 > app.use(express.static(path.join(__dirname, 'dist')));
 > 
 > var server = app.listen(8888, function () {// 指定端口
->   var host = server.address().address;
->   var port = server.address().port;
->   console.log(`服务启动成功，地址：http://${host}:${port}`)
+> var host = server.address().address;
+> var port = server.address().port;
+> console.log(`服务启动成功，地址：http://${host}:${port}`)
 > });
 > ```
 >
 > ![](img/微信截图_20230518161139.png)
+>
+> 
 >
 > **5、在deskapp目录下新建打包配置文件：package.json**
 >
@@ -102,16 +110,16 @@
 >
 > ```json
 > {
->     "name": "EXE名称",
->     "bin": "server.js",
->     "pkg": {
->         "scripts": [
->             "build/**/*.js"
->         ],
->         "assets": [
->             "dist/**/*"
->         ]
->     }
+>  "name": "EXE名称",
+>  "bin": "server.js",
+>  "pkg": {
+>      "scripts": [
+>          "build/**/*.js"
+>      ],
+>      "assets": [
+>          "dist/**/*"
+>      ]
+>  }
 > }
 > ```
 >
@@ -126,6 +134,8 @@
 > ```
 >
 > ![](img/微信截图_20230518163818.png)
+>
+> 
 >
 > **6、在deskapp目录下依次执行下面的命令**
 >
@@ -160,6 +170,8 @@
 >
 > ![](img/微信截图_20230518174656.png)
 >
+> 
+>
 > 之后再继续回到**deskapp**目录下执行命令
 >
 > ```sh
@@ -170,7 +182,8 @@
 >
 > ![](img/微信截图_20230518184854.png)
 >
+> 
+>
 > 双击**exe文件**，运行成功后，在浏览器输入：localhost:8888，就能访问打包好的项目了
 >
 > ![](img/微信截图_20230518185253.png)
-
