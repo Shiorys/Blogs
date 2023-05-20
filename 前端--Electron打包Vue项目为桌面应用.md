@@ -184,7 +184,8 @@
 >
 > ```js
 > 1、从 vue-router 中引入 createWebHashHistory
-> 2、将 createWebHistory(process.env.BASE_URL) 改为 createWebHashHistory(process.env.BASE_URL)
+> 2、将 createWebHistory(process.env.BASE_URL) // history模式
+>    改为 createWebHashHistory(process.env.BASE_URL) // hash 模式
 > ```
 >
 > ![](img/Snipaste_2023-05-20_20-46-59.png)
