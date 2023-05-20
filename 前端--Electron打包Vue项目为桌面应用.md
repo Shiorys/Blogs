@@ -10,7 +10,7 @@
 
 > **electron官网**：https://www.electronjs.org/
 >
-> **中文站点**：https://www.electronjs.org/zh/
+> **中文站点**：http://electron.org.cn/
 >
 > **electron源码地址**：https://github.com/electron/electron
 
