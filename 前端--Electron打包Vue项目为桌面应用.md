@@ -8,11 +8,27 @@
 
 ## 简述
 
-> **electron官网**：https://www.electronjs.org/
->
-> **中文站点**：http://electron.org.cn/
+> **electron官网**：https://www.electronjs.org/ ，（中文模式：https://www.electronjs.org/zh）
 >
 > **electron源码地址**：https://github.com/electron/electron
+>
+> **electron中文站点**：http://electron.org.cn/
+>
+> 常见的打包方式有两种：`electron-packager` 和`electron-builder`，更多方式查看**electron官网**，下文以**electron-builder**为打包方式
+>
+> electron-builder就是有比electron-packager有更丰富的的功能，支持更多的平台，同时也支持了自动更新。除了这几点之外，由electron-builder打出的包更为轻量，并且可以打包出不暴露源码的setup安装程序。
+>
+> ```tex
+> electron-packager源码地址：https://github.com/electron/electron-packager
+> electron-builder源码地址：https://github.com/electron-userland/electron-builder
+> ```
+>
+> **electron-builder**使用配置文档
+>
+> ```tex
+> 官网：https://www.electron.build/
+> 中文：http://electron.org.cn/builder/index.html
+> ```
 
 
 
@@ -154,7 +170,7 @@
 >
 > 
 >
-> 4、下载完成后通过命令：`npm run electron:serve`尝试运行electron窗体，运行成功后，就会弹出electron窗体
+> 4、下载完成后通过命令：`npm run electron:serve`尝试运行项目，确认项目是正常的，运行成功后，就会弹出electron窗体
 >
 > ```bash
 > npm run electron:serve
@@ -219,3 +235,192 @@
 >
 > ![](img/Snipaste_2023-05-20_21-02-47.png)
 
+
+
+## 完善配置
+
+> 打包配置-vue.config.js
+>
+> ```js
+> // vue.config.js
+> 
+> const { defineConfig } = require('@vue/cli-service')
+> module.exports = defineConfig({
+>   transpileDependencies: true,
+>   pluginOptions: {
+>     // vue-cli-plugin-electron-builder 配置
+>     electronBuilder: {
+>       // 打包配置
+>       builderOptions: {
+>         electronDownload: {
+>           mirror: "https://npm.taobao.org/mirrors/electron/" //镜像设置
+>         },
+>         productName: 'vue-demo', // 项目名，也是打包后安装包前缀名
+>         appId: 'com.shiory.app', // 包名
+>         copyright: 'Shiory版权所有', // 可在此处添加版权信息
+>         /* directories: { // 输出文件夹
+>           output: 'build' // 打包文件输出位置
+>         }, */
+>         files: ['**/*'],
+>         extraResources: {
+>           // 拷贝dll等静态文件到指定位置,否则打包之后回出现找不到dll的问题
+>           from: 'resources/',
+>           to: './'
+>         },
+>         dmg: {
+>           contents: [
+>             {
+>               x: 410,
+>               y: 150,
+>               type: 'link',
+>               path: '/Applications'
+>             },
+>             {
+>               x: 130,
+>               y: 150,
+>               type: 'file'
+>             }
+>           ]
+>         },
+>         mac: {
+>           // 设置mac的图标
+>           icon: 'public/aoz.ico'
+>         },
+>         linux: {
+>           // 设置linux的图标
+>           icon: 'public/aoz.ico'
+>         },
+>         win: {
+>           icon: 'public/aoz.ico', // 图标路径 windows系统中icon需要256*256的ico格式图片，更换应用图标亦在此处
+>           // eslint-disable-next-line no-template-curly-in-string
+>           artifactName: '${productName}_setup_${version}.${ext}',
+>           target: [
+>             {
+>               target: 'nsis', // 使用nsis打成安装包
+>               arch: [
+>                 'x64' // 打包文件适用系统
+>               ]
+>             }
+>           ]
+>         },
+>         asar: false,
+>         nsis: {
+>           oneClick: false, // oneClick: 是否可以一键安装，若需自定义安装路径，此处为false
+>           allowElevation: true, // 允许请求提升。 如果为false，则用户必须使用提升的权限重新启动安装程序。
+>           allowToChangeInstallationDirectory: true, // 允许修改安装路径
+>           installerIcon: 'public/aoz.ico', // 安装图标
+>           uninstallerIcon: 'public/favicon.ico', // 卸载图标
+>           installerHeaderIcon: 'public/aoz.ico', // 安装时的头部图标
+>           createDesktopShortcut: true, // 创建桌面快捷键
+>           createStartMenuShortcut: false, // 创建开始菜单图标
+>           // eslint-disable-next-line no-template-curly-in-string
+>           shortcutName: '${productName}-desktop' // 快捷键名称
+>           // include: "build/script/installer.nsh", // 若有自定义nsis脚本，可添加，没有则省略此句
+>         },
+>         publish: [
+>           {
+>             provider: 'generic', // 服务器提供商
+>             url: 'https://www.baidu.com/' // 服务器地址，根据实际情况添加
+>           }
+>         ]
+>       }
+>     }
+>   }
+> })
+> ```
+>
+> 打包配置-background.js
+>
+> ```js
+> 'use strict'
+> 
+> import { app, protocol, BrowserWindow } from 'electron'
+> import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
+> import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
+> const isDevelopment = process.env.NODE_ENV !== 'production'
+> 
+> // Scheme must be registered before the app is ready
+> protocol.registerSchemesAsPrivileged([
+>   { scheme: 'app', privileges: { secure: true, standard: true } }
+> ])
+> 
+> async function createWindow () {
+>   // Create the browser window.
+>   const win = new BrowserWindow({
+>     width: 800,
+>     height: 600,
+>     title: '标题',
+>     webPreferences: {
+> 
+>       // Use pluginOptions.nodeIntegration, leave this alone
+>       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
+>       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
+>       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
+>     }
+>   })
+> 
+>   if (process.env.WEBPACK_DEV_SERVER_URL) {
+>     // Load the url of the dev server if in development mode
+>     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
+>     if (!process.env.IS_TEST) win.webContents.openDevTools()
+>   } else {
+>     createProtocol('app')
+>     // Load the index.html when not in development
+>     win.loadURL('app://./index.html')
+>   }
+> }
+> 
+> // Quit when all windows are closed.
+> app.on('window-all-closed', () => {
+>   // On macOS it is common for applications and their menu bar
+>   // to stay active until the user quits explicitly with Cmd + Q
+>   if (process.platform !== 'darwin') {
+>     app.quit()
+>   }
+> })
+> 
+> app.on('activate', () => {
+>   // On macOS it's common to re-create a window in the app when the
+>   // dock icon is clicked and there are no other windows open.
+>   if (BrowserWindow.getAllWindows().length === 0) createWindow()
+> })
+> 
+> // This method will be called when Electron has finished
+> // initialization and is ready to create browser windows.
+> // Some APIs can only be used after this event occurs.
+> app.on('ready', async () => {
+>   if (isDevelopment && !process.env.IS_TEST) {
+>     // Install Vue Devtools
+>     try {
+>       await installExtension(VUEJS3_DEVTOOLS)
+>     } catch (e) {
+>       console.error('Vue Devtools failed to install:', e.toString())
+>     }
+>   }
+>   createWindow()
+>   // 隐藏菜单栏
+>   const {
+>     Menu
+>   } = require('electron')
+>   Menu.setApplicationMenu(null)
+>   if (process.platform !== 'darwin') {
+>     app.dock.hide()
+>   }
+> })
+> 
+> // Exit cleanly on request from parent process in development mode.
+> if (isDevelopment) {
+>   if (process.platform === 'win32') {
+>     process.on('message', (data) => {
+>       if (data === 'graceful-exit') {
+>         app.quit()
+>       }
+>     })
+>   } else {
+>     process.on('SIGTERM', () => {
+>       app.quit()
+>     })
+>   }
+> }
+> 
+> ```
