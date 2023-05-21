@@ -424,3 +424,34 @@
 > }
 > 
 > ```
+
+
+
+## 参考链接
+
+> ```
+> https://github.com/nklayman/vue-cli-plugin-electron-builder/issues/171
+> https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/configuration.html#table-of-contents
+> https://www.electron.build/configuration/configuration
+> https://blog.csdn.net/xi1213/article/details/123953851
+> https://blog.csdn.net/mm_0123456789/article/details/122825576
+> https://blog.csdn.net/weixin_39666797/article/details/117221192
+> https://icofx.ro/
+> https://github.com/electron-userland/electron-builder
+> https://www.cnblogs.com/benpaodejiandan/p/7081011.html
+> https://github.com/electron/electron-packager
+> https://www.51cto.com/article/627670.html
+> https://jiuaidu.com/jianzhan/1133016/
+> https://zhuanlan.zhihu.com/p/449443615
+> https://github.com/electron/electron/releases
+> 同时下载对应的下所报文件与SHASUMS256.txt文件
+> C:\Users\Administrator.DESKTOP-BVS0D4M\AppData\Local\electron\Cache
+> C:\Users\Administrator.DESKTOP-BVS0D4M\AppData\Local\electron-builder\Cache
+> 从github上找到对应的版本并下载，放在如下位置：
+> https://github.com/electron-userland/electron-builder-binaries/releases
+> 继续从github仓库下载对应版本的压缩包，放在如下位置：
+> https://github.com/electron-userland/electron-builder-binaries/releases
+> https://blog.51cto.com/u_15920212/5962937
+> https://blog.csdn.net/KYuruyan/article/details/119948460
+> https://blog.csdn.net/qq_34170840/article/details/124753565
+> ```
